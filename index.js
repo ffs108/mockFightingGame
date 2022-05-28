@@ -8,7 +8,7 @@ canvas.width = 1024;
 canvas.height = 576;
 
 cons.fillRect(0, 0, canvas.width, canvas.height);
-
+var timer = 11;
 
 
 
@@ -67,8 +67,23 @@ const player = new actor({position:{x:0, y:0}, velocity:{x:0,y:0}, color:'red', 
 const enemy = new actor({position:{x:950, y:0}, velocity:{x:0,y:0}, color:'orange', offset:{x:-50,y:0}});
 
 const inputs = {right:{pressed: false}, left:{pressed: false}, up:{pressed: false},
-                d:{pressed: false}, a:{pressed: false}, w:{pressed: false}}
+                d:{pressed: false}, a:{pressed: false}, w:{pressed: false}};
 
+//timer rundown
+function timeDown(){
+    if(timer > 0){
+        timer--;
+        setTimeout(timeDown, 1000);
+        document.getElementById('timer').innerHTML = timer;
+    }
+    if(player.health === enemy.health){
+        'tie'
+    }
+}
+timeDown()
+
+
+//hitbox collision logic check
 function rectCollision({rect1, rect2}){
     return (
         rect1.attackBox.position.x + rect1.attackBox.width >= rect2.position.x &&
