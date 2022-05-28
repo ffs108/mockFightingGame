@@ -118,7 +118,7 @@ function animate(){
     if(rectCollision({rect1:enemy, rect2:player}) && enemy.isAttacking){
         enemy.isAttacking = false;
         player.health -= 15;
-        document.querySelector('#eHealth').style.width = player.health + "%";
+        document.querySelector('#pHealth').style.width = player.health + "%";
         console.log('hit');
     }
     //enemy copypaste but switch rect1 to enemy and 2 to player
