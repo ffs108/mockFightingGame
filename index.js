@@ -76,8 +76,19 @@ function timeDown(){
         setTimeout(timeDown, 1000);
         document.getElementById('timer').innerHTML = timer;
     }
-    if(player.health === enemy.health){
-        'tie'
+    if(timer === 0){
+        overlay = document.getElementById('result');
+        overlay.style.display = 'flex'; overlay.style.backgroundColor = '#ffffff';
+        overlay.style.opacity = 0.5;    
+        if(player.health === enemy.health){
+            overlay.innerHTML = 'TIE';
+        }
+        else if(player.health > enemy.health){
+            overlay.innerHTML = 'PLAYER 1 WINS';    
+        }
+        else {
+            overlay.innerHTML = 'PLAYER 2 WINS';   
+        }
     }
 }
 timeDown()
@@ -126,13 +137,13 @@ function animate(){
     //hitbox detection
     if(rectCollision({rect1:player, rect2:enemy}) && player.isAttacking){
         player.isAttacking = false;
-        enemy.health -= 15;
+        enemy.health -= 10;
         document.querySelector('#eHealth').style.width = enemy.health + "%";
         console.log('hit');
     }
     if(rectCollision({rect1:enemy, rect2:player}) && enemy.isAttacking){
         enemy.isAttacking = false;
-        player.health -= 15;
+        player.health -= 10;
         document.querySelector('#pHealth').style.width = player.health + "%";
         console.log('hit');
     }
