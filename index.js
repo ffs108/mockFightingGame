@@ -22,6 +22,7 @@ class actor{
         this.position = position;
         this.velocity = velocity
         this.color = color;
+        this.health = 100;
         this.width = 50;
         this.height = 150;
         this.lastIn;
@@ -63,9 +64,10 @@ class actor{
 }
 
 const player = new actor({position:{x:0, y:0}, velocity:{x:0,y:0}, color:'red', offset:{x:0,y:-50}});
-const enemy = new actor({position:{x:950, y:0}, velocity:{x:0,y:0}, color:'orange', offset:{x:0,y:-50}});
+const enemy = new actor({position:{x:950, y:0}, velocity:{x:0,y:0}, color:'orange', offset:{x:-50,y:0}});
 
-const inputs = {right:{pressed: false}, left:{pressed: false}, up:{pressed: false}}
+const inputs = {right:{pressed: false}, left:{pressed: false}, up:{pressed: false},
+                d:{pressed: false}, a:{pressed: false}, w:{pressed: false}}
 
 function rectCollision({rect1, rect2}){
     return (
@@ -84,7 +86,8 @@ function animate(){
     enemy.update();
 
     player.velocity.x = 0;
-    //player
+    enemy.velocity.x = 0;
+    //player movement
     if(inputs.right.pressed && player.lastIn === 'ArrowRight'){
         player.velocity.x = 3;
     }
@@ -94,13 +97,28 @@ function animate(){
     else if(inputs.up.pressed  && player.lastIn === 'ArrowUp'){
         player.velocity.y = -3;
     }
-
-    enemy.velocity.x = 0;
-    //enemy copypase above jus change enemy.lastIn
+    //enemy movement
+    if(inputs.d.pressed && enemy.lastIn === 'd'){
+        enemy.velocity.x = 3;
+    }
+    else if(inputs.a.pressed  && enemy.lastIn === 'a'){
+        enemy.velocity.x = -3;
+    }
+    else if(inputs.w.pressed  && enemy.lastIn === 'w'){
+        enemy.velocity.y = -3;
+    }
 
     //hitbox detection
     if(rectCollision({rect1:player, rect2:enemy}) && player.isAttacking){
         player.isAttacking = false;
+        enemy.health -= 15;
+        document.querySelector('#eHealth').style.width = enemy.health + "%";
+        console.log('hit');
+    }
+    if(rectCollision({rect1:enemy, rect2:player}) && enemy.isAttacking){
+        enemy.isAttacking = false;
+        player.health -= 15;
+        document.querySelector('#eHealth').style.width = player.health + "%";
         console.log('hit');
     }
     //enemy copypaste but switch rect1 to enemy and 2 to player
@@ -121,8 +139,23 @@ window.addEventListener('keydown', (event)=>{
             player.velocity.y = -10;
             inputs.up.pressed = true;
             break;
-        case 'z':
+        case '0':
             player.attack();
+            break
+        case 'd':
+            inputs.d.pressed = true;
+            enemy.lastIn = 'd';
+            break;
+        case 'a':
+            inputs.a.pressed = true;
+            enemy.lastIn = 'a';
+            break;
+        case 'w':
+            enemy.velocity.y = -10;
+            inputs.w.pressed = true;
+            break;
+        case ' ':
+            enemy.attack();
             break
     }
 });
@@ -137,6 +170,17 @@ window.addEventListener('keyup', (event)=>{
             break;
         case 'ArrowUp':
             inputs.up.pressed = false;
+        break
+    }
+    switch(event.key){
+        case 'd':
+            inputs.d.pressed = false;
+            break;
+        case 'a':
+            inputs.a.pressed = false;
+            break;
+        case 'w':
+            inputs.w.pressed = false;
         break
     }
 });
