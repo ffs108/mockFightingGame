@@ -9,6 +9,7 @@ canvas.height = 576;
 
 cons.fillRect(0, 0, canvas.width, canvas.height);
 var timer = 11;
+var timerID;
 
 
 
@@ -72,12 +73,12 @@ const inputs = {right:{pressed: false}, left:{pressed: false}, up:{pressed: fals
 //timer rundown
 function timeDown(){
     if(timer > 0){
+        timerID = setTimeout(timeDown, 1000);
         timer--;
-        setTimeout(timeDown, 1000);
         document.getElementById('timer').innerHTML = timer;
     }
     if(timer === 0){
-        gameStatusCheck({player, enemy});
+        gameStatusCheck({player, enemy, timerID});
     }
 }
 timeDown()
@@ -93,7 +94,8 @@ function rectCollision({rect1, rect2}){
     )
 }
 
-function gameStatusCheck({player, enemy}){
+function gameStatusCheck({player, enemy, timerID}){
+    clearTimeout(timerID);
     overlay = document.getElementById('result');
     overlay.style.display = 'flex'; overlay.style.backgroundColor = '#ffffff';
     overlay.style.opacity = 0.5;    
@@ -153,7 +155,7 @@ function animate(){
     }
     //ending game based on health
     if(enemy.health <= 0 || player.health <= 0){
-        gameStatusCheck({player, enemy});
+        gameStatusCheck({player, enemy, timerID});
     }
 }
 animate();
