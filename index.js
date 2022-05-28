@@ -77,18 +77,7 @@ function timeDown(){
         document.getElementById('timer').innerHTML = timer;
     }
     if(timer === 0){
-        overlay = document.getElementById('result');
-        overlay.style.display = 'flex'; overlay.style.backgroundColor = '#ffffff';
-        overlay.style.opacity = 0.5;    
-        if(player.health === enemy.health){
-            overlay.innerHTML = 'TIE';
-        }
-        else if(player.health > enemy.health){
-            overlay.innerHTML = 'PLAYER 1 WINS';    
-        }
-        else {
-            overlay.innerHTML = 'PLAYER 2 WINS';   
-        }
+        gameStatusCheck({player, enemy});
     }
 }
 timeDown()
@@ -102,6 +91,21 @@ function rectCollision({rect1, rect2}){
         rect1.attackBox.position.y + rect1.attackBox.height >= rect2.position.y &&
         rect1.attackBox.position.y <= rect2.position.y + rect2.height
     )
+}
+
+function gameStatusCheck({player, enemy}){
+    overlay = document.getElementById('result');
+    overlay.style.display = 'flex'; overlay.style.backgroundColor = '#ffffff';
+    overlay.style.opacity = 0.5;    
+    if(player.health === enemy.health){
+        overlay.innerHTML = 'TIE';
+    }
+    else if(player.health > enemy.health){
+        overlay.innerHTML = 'PLAYER 1 WINS';    
+    }
+    else {
+        overlay.innerHTML = 'PLAYER 2 WINS';   
+    }
 }
 
 function animate(){
@@ -147,7 +151,10 @@ function animate(){
         document.querySelector('#pHealth').style.width = player.health + "%";
         console.log('hit');
     }
-    //enemy copypaste but switch rect1 to enemy and 2 to player
+    //ending game based on health
+    if(enemy.health <= 0 || player.health <= 0){
+        gameStatusCheck({player, enemy});
+    }
 }
 animate();
 
