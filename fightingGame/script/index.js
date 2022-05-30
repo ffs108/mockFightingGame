@@ -66,20 +66,44 @@ class Actor{
 
 class Sprite{
 
-    constructor ({position, imgSrc}){
+    constructor ({position, imgSrc, scale = 1, framesMax = 1}){
         this.position = position;
         this.width = 50;
         this.height = 150;
         this.img = new Image();
         this.img.src = imgSrc;
+        this.scale = scale;
+        this.framesMax = framesMax;
+        this.framesCurrent = 0;
+        this.frameElapsed = 0;
+        this.framesHold = 10; //lower val = faster animation loop
     }
 
     draw(){
-        cons.drawImage(this.img, this.position.x, this.position.y);
+        cons.drawImage(
+            this.img,
+            this.framesCurrent * (this.img.width/this.framesMax),
+            0,
+            this.img.width / this.framesMax,
+            this.img.height,
+            this.position.x,
+            this.position.y,
+            (this.img.width / this.framesMax) * this.scale,
+            this.img.height * this.scale
+        );
     }
 
     update(){
          this.draw();
+         this.frameElapsed++
+         if(this.frameElapsed % this.framesHold === 0){
+             if(this.framesCurrent < this.framesMax - 1){
+                 this.framesCurrent++;
+             }
+             else{
+                 this.framesCurrent = 0;
+             }
+         }
     }
 }
 
