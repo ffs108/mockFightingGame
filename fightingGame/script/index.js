@@ -8,7 +8,7 @@ canvas.width = 1024;
 canvas.height = 576;
 
 cons.fillRect(0, 0, canvas.width, canvas.height);
-var timer = 11;
+var timer = 91;
 var timerID;
 
 
@@ -17,7 +17,7 @@ var timerID;
     player objects and character movement
 */
 const gravity = 0.25;
-class actor{
+class Actor{
 
     constructor ({position, velocity, color, offset}){
         this.position = position;
@@ -64,56 +64,49 @@ class actor{
     }
 }
 
-const player = new actor({position:{x:0, y:0}, velocity:{x:0,y:0}, color:'red', offset:{x:0,y:-50}});
-const enemy = new actor({position:{x:950, y:0}, velocity:{x:0,y:0}, color:'orange', offset:{x:-50,y:0}});
+class Sprite{
 
-const inputs = {right:{pressed: false}, left:{pressed: false}, up:{pressed: false},
-                d:{pressed: false}, a:{pressed: false}, w:{pressed: false}};
-
-//timer rundown
-function timeDown(){
-    if(timer > 0){
-        timerID = setTimeout(timeDown, 1000);
-        timer--;
-        document.getElementById('timer').innerHTML = timer;
+    constructor ({position, imgSrc}){
+        this.position = position;
+        this.width = 50;
+        this.height = 150;
+        this.img = new Image();
+        this.img.src = imgSrc;
     }
-    if(timer === 0){
-        gameStatusCheck({player, enemy, timerID});
+
+    draw(){
+        cons.drawImage(this.img, this.position.x, this.position.y);
+    }
+
+    update(){
+         this.draw();
     }
 }
+
+const bg = new Sprite({position:{x:0, y:0}, imgSrc:'img/background.png'});
+const floor = new Sprite({position:{x:100, y:100}, imgSrc:'img/floor.png'});
+const player = new Actor({position:{x:0, y:0}, velocity:{x:0,y:0}, color:'red', offset:{x:0,y:-50}});
+const enemy = new Actor({position:{x:950, y:0}, velocity:{x:0,y:0}, color:'orange', offset:{x:-50,y:0}});
+
+const inputs = {
+    right:{pressed: false},
+    left:{pressed: false}, 
+    up:{pressed: false},
+    d:{pressed: false}, 
+    a:{pressed: false}, 
+    w:{pressed: false}
+};
+
+
 timeDown()
 
 
-//hitbox collision logic check
-function rectCollision({rect1, rect2}){
-    return (
-        rect1.attackBox.position.x + rect1.attackBox.width >= rect2.position.x &&
-        rect1.attackBox.position.x <= rect2.position.x + rect2.width &&
-        rect1.attackBox.position.y + rect1.attackBox.height >= rect2.position.y &&
-        rect1.attackBox.position.y <= rect2.position.y + rect2.height
-    )
-}
-
-function gameStatusCheck({player, enemy, timerID}){
-    clearTimeout(timerID);
-    overlay = document.getElementById('result');
-    overlay.style.display = 'flex'; overlay.style.backgroundColor = '#ffffff';
-    overlay.style.opacity = 0.5;    
-    if(player.health === enemy.health){
-        overlay.innerHTML = 'TIE';
-    }
-    else if(player.health > enemy.health){
-        overlay.innerHTML = 'PLAYER 1 WINS';    
-    }
-    else {
-        overlay.innerHTML = 'PLAYER 2 WINS';   
-    }
-}
 
 function animate(){
     window.requestAnimationFrame(animate);
     cons.fillStyle = 'black';
     cons.fillRect(0, 0, canvas.width, canvas.height);
+    bg.update();
     player.update();
     enemy.update();
 
