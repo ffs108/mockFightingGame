@@ -75,7 +75,6 @@ const inputs = {
 
 
 timeDown();
-checker();
 
 
 function animate(){
@@ -146,12 +145,19 @@ function animate(){
         enemy.health -= 10;
         document.querySelector('#eHealth').style.width = enemy.health + "%";
         console.log('hit');
+        if(enemy.health <= 0){
+            enemy.switchSprite('death');
+        }
     }
     if(rectCollision({rect1:enemy, rect2:player}) && enemy.isAttacking){
         enemy.isAttacking = false;
         player.health -= 10;
         document.querySelector('#pHealth').style.width = player.health + "%";
         console.log('hit');
+        if(player.health <= 0){
+            console.log('here')
+            player.switchSprite('death');
+        }
     }
     //ending game based on health
     if(enemy.health <= 0 || player.health <= 0){
@@ -159,6 +165,10 @@ function animate(){
     }
 }
 animate();
+
+
+
+
 
 window.addEventListener('keydown', (event)=>{
     if(!player.dead){

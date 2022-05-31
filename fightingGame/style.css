@@ -1,5 +1,6 @@
 *{
     box-sizing: border-box;
+    font-family: 'Press Start 2P','Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;;
 }
 
 #wrapper{
@@ -23,6 +24,16 @@
     width: 100%;
 }
 
+#pName{
+    position: absolute;
+    background-color: #000000;
+    opacity: .5;
+    color: #ffffff;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin-top: 7px;
+}
 #pHealth{
     background: linear-gradient(270deg, rgba(2,0,36,1) 0%, rgba(249,231,91,1) 0%, rgba(0,255,40,0.5991396360759493) 80%);
     margin-right: 10px;
@@ -41,18 +52,30 @@
 
 #timer{
     display: flex;
-    background: white;
+    background: silver;
     height: 90px;
     width: 100px;
     flex-shrink: 0;
-    border: 1px solid black;
+    border: 2px solid black;
     align-items: center;
     justify-content: center;
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     font-weight: bolder;
-    font-size: 42px;
+    font-size: 28px;
+    border-style: double;
+    border-radius: 50px;
 }
 
+
+#eName{
+    position: absolute;
+    background-color: #000000;
+    opacity: .5;
+    color: #ffffff;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin-top: 7px;
+}
 #eHealth{
     background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(249,231,91,1) 0%, rgba(0,255,40,0.5991396360759493) 80%);
     margin-left: 10px;

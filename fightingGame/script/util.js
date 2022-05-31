@@ -10,21 +10,6 @@ function timeDown(){
     }
 }
 
-function checker(){
-    checker = setInterval(lifeCheck(), 100);
-}
-
-function lifeCheck(){
-    if(player.health <= 0){
-        player.switchSprite('death');
-        clearTimeout(checker);
-    }
-    else if(enemy.health <= 0){
-        enemy.switchSprite('death');
-        clearTimeout(checker);
-    }
-
-}
 
 //hitbox collision logic check
 function rectCollision({rect1, rect2}){
@@ -40,15 +25,25 @@ function gameStatusCheck({player, enemy, timerID}){
     clearTimeout(timerID);
     overlay = document.getElementById('result');
     overlay.style.display = 'flex'; overlay.style.backgroundColor = '#ffffff';
-    overlay.style.opacity = 0.5;    
+    overlay.style.opacity = 0.5; overlay.style.fontWeight = 'bold';
+    overlay.style.fontSize = '28px';
+    if(player.health <= 0 && enemy.health <=0){
+        overlay.innerHTML = 'DOUBLE KO';
+    }
     if(player.health === enemy.health){
         overlay.innerHTML = 'TIE';
     }
     else if(player.health > enemy.health){
-        overlay.innerHTML = 'PLAYER 1 WINS';    
+        overlay.innerHTML = 'THE HUNTRESS WINS \n<br>';
+        if(player.health === 100){
+            overlay.innerHTML += '<br><small>--FLAWLESS VICTORY--</small>'
+        }
     }
     else {
-        overlay.innerHTML = 'PLAYER 2 WINS';   
+        overlay.innerHTML = 'THE PYROMANCER WINS<br>';
+        if(enemy.health === 100){
+            overlay.innerHTML += '<br><small>--FLAWLESS VICTORY--</small>'
+        }
     }
 }
 

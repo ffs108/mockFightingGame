@@ -78,7 +78,7 @@ class Actor extends Sprite{
          this.attackBox.position.y = this.position.y + this.attackBox.offset.y;;
         
         //attackbox testing
-        cons.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
+        //cons.fillRect(this.attackBox.position.x, this.attackBox.position.y, this.attackBox.width, this.attackBox.height);
 
          this.position.x += this.velocity.x
          this.position.y += this.velocity.y;
@@ -101,10 +101,10 @@ class Actor extends Sprite{
 
     switchSprite(sprite){
         if(this.img === this.sprites.death.img){
-            if(this.framesCurrent === this.sprites.death.framesMax==1){
+            if(this.framesCurrent === this.sprites.death.framesMax-5){
                 this.dead = true;
-                return
             }
+            return
         }
         if(this.img === this.sprites.attack1.img && this.framesCurrent < this.sprites.attack1.framesMax-1){
             return
@@ -149,7 +149,6 @@ class Actor extends Sprite{
                 if(this.img !== this.sprites.death.img){
                     this.img = this.sprites.death.img;
                     this.framesMax = this.sprites.death.framesMax;
-                    this.framesCurrent = 0;
                 }
                 break
         }
