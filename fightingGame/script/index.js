@@ -18,9 +18,12 @@ var timerID;
 */
 const gravity = 0.25;
 
+//background
 const bg = new Sprite({position:{x:0, y:0}, imgSrc:'img/background.png'});
 const bgLayer2 = new Sprite({position:{x:0, y:150}, imgSrc:'img/layer_2.png'});
 const floor = new Sprite({position:{x:0, y:480}, imgSrc:'img/floor.png'});
+
+//player 1 object creation
 const player = new Actor({
     position:{x:0, y:0},
     velocity:{x:0,y:0}, 
@@ -42,6 +45,8 @@ const player = new Actor({
         height: 50
     }
 });
+
+//player 2 object creation
 const enemy = new Actor({
     position:{x:950, y:0}, 
     velocity:{x:0,y:0},
@@ -77,6 +82,11 @@ const inputs = {
 timeDown();
 
 
+/*
+Updates background layers and player models onto the canvas
+for a visual representation as well as changes the image src
+for each input
+*/
 function animate(){
     window.requestAnimationFrame(animate);
     cons.fillStyle = 'black';
@@ -90,7 +100,7 @@ function animate(){
     player.velocity.x = 0;
     enemy.velocity.x = 0;
     
-    //player movement
+    //player movement and animation
     player.switchSprite('idle');
     if(inputs.right.pressed && player.lastIn === 'ArrowRight'){
         player.velocity.x = 3;
@@ -115,7 +125,7 @@ function animate(){
     }
 
 
-    //enemy movement
+    //enemy movement and animation
     enemy.switchSprite('idle');
     if(inputs.d.pressed && enemy.lastIn === 'd'){
         enemy.velocity.x = 3;
@@ -168,8 +178,9 @@ animate();
 
 
 
-
-
+/*
+dynamically listen to button press for control of player model
+*/
 window.addEventListener('keydown', (event)=>{
     if(!player.dead){
         switch(event.key){
@@ -211,6 +222,9 @@ window.addEventListener('keydown', (event)=>{
     }
 });
 
+/*
+added to the stop the infitite movement caused from only having an input record
+*/
 window.addEventListener('keyup', (event)=>{
     switch(event.key){
         case 'ArrowRight':

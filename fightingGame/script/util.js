@@ -21,6 +21,10 @@ function rectCollision({rect1, rect2}){
     )
 }
 
+
+/*
+Checking result of game after expired timer and displaying it
+*/
 function gameStatusCheck({player, enemy, timerID}){
     clearTimeout(timerID);
     overlay = document.getElementById('result');

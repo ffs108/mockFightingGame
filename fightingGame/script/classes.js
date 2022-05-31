@@ -1,3 +1,7 @@
+/*
+    Parent class of actor, provides the ability to display a file src as an image 
+    which can be both static or dynamic
+*/
 class Sprite{
 
     constructor ({position, imgSrc, scale = 1, framesMax = 1, offset={x:0,y:0}}){
@@ -47,10 +51,14 @@ class Sprite{
 }
 
 
+/*
+    Child of Sprite, this can display dynamic and static models but is specifically
+    addressing player model movement options, attack triggers and death
+*/
 class Actor extends Sprite{
 
     constructor ({position, velocity, offset={x:0,y:0}, imgSrc, scale = 1, framesMax = 1, sprites, attackBox = {offset:{}, width: undefined, height: undefined}}){
-        super({position, imgSrc, scale, framesMax, offset});
+        super({position, imgSrc, scale, framesMax, offset});//deligate these to parent
         this.velocity = velocity
         this.health = 100;
         this.width = 50;
@@ -60,7 +68,7 @@ class Actor extends Sprite{
         this.isAttacking;
         this.framesCurrent = 0;
         this.frameElapsed = 0;
-        this.framesHold = 5; //lower val = faster animation loop
+        this.framesHold = 10;
         this.sprites = sprites
         this.dead = false;
         for (const sprite in sprites){
@@ -69,6 +77,10 @@ class Actor extends Sprite{
         }
     }
 
+    /*
+        responsible for updating background character models to postions within the 
+        canvas element in html also checks for death
+    */
     update(){
          this.render();
         if(!this.dead){
@@ -91,6 +103,10 @@ class Actor extends Sprite{
          }
     }
 
+    /*
+        calls for animaiton and sets attack to be registered onto enemy hitbox if 
+        successful
+    */
     attack(){
         this.switchSprite('attack1');
         this.isAttacking = true;
@@ -99,6 +115,11 @@ class Actor extends Sprite{
         }, 100);
     }
 
+
+    /*
+        handles cases for each input to be set onto the proper animation and 
+        resetting the player model after its complete.
+    */
     switchSprite(sprite){
         if(this.img === this.sprites.death.img){
             if(this.framesCurrent === this.sprites.death.framesMax-5){
