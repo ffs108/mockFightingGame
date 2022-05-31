@@ -10,6 +10,22 @@ function timeDown(){
     }
 }
 
+function checker(){
+    checker = setInterval(lifeCheck(), 100);
+}
+
+function lifeCheck(){
+    if(player.health <= 0){
+        player.switchSprite('death');
+        clearTimeout(checker);
+    }
+    else if(enemy.health <= 0){
+        enemy.switchSprite('death');
+        clearTimeout(checker);
+    }
+
+}
+
 //hitbox collision logic check
 function rectCollision({rect1, rect2}){
     return (
@@ -35,3 +51,4 @@ function gameStatusCheck({player, enemy, timerID}){
         overlay.innerHTML = 'PLAYER 2 WINS';   
     }
 }
+
